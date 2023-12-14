@@ -1,5 +1,6 @@
 import re
 
+
 def nmea_to_lat_long(nmea_sentence):
     pattern = re.compile(r'\$GPGGA,(\d+\.\d+),(\d+\.\d+),([NS]),(\d+\.\d+),([EW]),.*\*([0-9A-Fa-f]+)')
     match = pattern.match(nmea_sentence)
@@ -24,5 +25,6 @@ def nmea_to_lat_long(nmea_sentence):
     return latitude, longitude
 
 
-#$GPGGA,131042.652,5246.176,N,00506.306,E,1,12,1.0,0.0,M,0.0,M,,*69
-print(nmea_to_lat_long(input("NMEA sentence: \n")))
+if __name__ == "__main__":
+    # $GPGGA,131042.652,5246.176,N,00506.306,E,1,12,1.0,0.0,M,0.0,M,,*69
+    print(nmea_to_lat_long(input("NMEA sentence: \n")))
