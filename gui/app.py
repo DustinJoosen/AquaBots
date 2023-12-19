@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, render_template, request
 from Components.MoistureSensor import get_moisture as get_moisture_from_sensor
+from Components.Sonar import distance
 from gui.SetInterval import SetInterval
 from ThingsboardRequestHandler import ThingsboardRequestHandler
 
@@ -20,6 +21,40 @@ def measure_humidity(**kwargs):
 def measure_gps(**kwargs):
     print(f"Measuring GPS on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
     thingsboardhandler.send({"gps": kwargs['pin']})
+
+
+def measure_sonar(**kwargs):
+    print(f"Measuring sonar on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
+
+    # Measure using sonar here
+    data = {
+        "sonar": distance()
+    }
+
+    thingsboardhandler.send(data)
+
+
+# APIs
+@app.route("/api/sonar/on", methods=["GET"])
+def sonar_on():
+    interval = request.args.get('interval')
+    pin = request.args.get('pin')
+
+    data = {"message": f"Turning the Sonar sensor on, with an interval of {interval} on pin {pin}"}
+
+    interval_threads["sonar"] = SetInterval(measure_sonar, int(interval), **{"pin": pin})
+
+    return jsonify(data)
+
+
+@app.route("/api/sonar/off", methods=["GET"])
+def sonar_off():
+    data = {"message": "Turning the Sonar sensor off"}
+
+    interval_threads["sonar"].cancel()
+    interval_threads["sonar"] = None
+
+    return jsonify(data)
 
 
 @app.route("/api/gps/on", methods=["GET"])

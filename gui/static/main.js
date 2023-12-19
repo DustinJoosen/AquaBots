@@ -20,6 +20,16 @@ document.getElementById("toggle_humidity_btn").addEventListener("change", (event
     send_api_request("humidity/" + (humidity_on_off ? "on" : "off") + "?interval=" + interval + "&pin=" + pin);
 });
 
+document.getElementById("toggle_sonar_btn").addEventListener("change", (event) => {
+    let sonar_on_off = event.target.checked;
+    let interval = parseInt(document.getElementById("sonar_interval").value);
+    let pin = document.getElementById("sonar_pin").value;
+
+    // Send request
+    send_api_request("sonar/" + (sonar_on_off ? "on" : "off") + "?interval=" + interval + "&pin=" + pin);
+});
+
+
 document.getElementById("toggle_gps_btn").addEventListener("change", (event) => {
     let gps_on_off = event.target.checked;
     let interval = parseInt(document.getElementById("gps_interval").value);
