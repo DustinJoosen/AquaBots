@@ -1,12 +1,15 @@
 from flask import Flask, jsonify, render_template, request
-from Components.MoistureSensor import get_moisture as get_moisture_from_sensor
-from Components.Sonar import distance
-from gui.SetInterval import SetInterval
-from ThingsboardRequestHandler import ThingsboardRequestHandler
+# from Components.MoistureSensor import get_moisture as get_moisture_from_sensor
+# from Components.Sonar import distance
+from GUI.SetInterval import SetInterval
+from RequestHandlers import ThingsboardRequestHandler, ComponentAPIRequestHandler
+import random
 
 app = Flask(__name__)
 
 interval_threads = {}
+
+componenthandler = ComponentAPIRequestHandler()
 
 thingsboardhandler = ThingsboardRequestHandler()
 thingsboardhandler.set_access_code("4k1q85v7h544t6d6ki17")
@@ -15,7 +18,10 @@ thingsboardhandler.set_access_code("4k1q85v7h544t6d6ki17")
 # Functions that actually measure things.
 def measure_humidity(**kwargs):
     print(f"Measuring humidity on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
-    thingsboardhandler.send({"humidity": kwargs['pin']})
+
+    humidity = componenthandler.get("humidity")
+    print(f"measured humidity: {humidity}")
+    thingsboardhandler.send({"humidity": humidity})
 
 
 def measure_gps(**kwargs):
@@ -27,11 +33,8 @@ def measure_sonar(**kwargs):
     print(f"Measuring sonar on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
 
     # Measure using sonar here
-    data = {
-        "sonar": distance()
-    }
-
-    thingsboardhandler.send(data)
+    distance = componenthandler.get("sonar")
+    thingsboardhandler.send({"distance": distance})
 
 
 # APIs
