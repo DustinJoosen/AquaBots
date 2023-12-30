@@ -1,7 +1,5 @@
 from flask import Flask, jsonify, render_template, request
-# from Components.MoistureSensor import get_moisture as get_moisture_from_sensor
-# from Components.Sonar import distance
-from GUI.SetInterval import SetInterval
+from SetInterval import SetInterval
 from RequestHandlers import ThingsboardRequestHandler, ComponentAPIRequestHandler
 import random
 
