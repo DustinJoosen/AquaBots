@@ -61,5 +61,5 @@ The following steps can be followed:
 
 This step will not be explained in this guide. You can find it here:
 
-- [PDF version (english)](/docs/EnglishThingsboardInstall.pdf)
-- [PDF version (dutch)](/docs/DutchThingsboardInstall.pdf)
+- [PDF version (english)](/docs/Thingsboard%20guide%20English.pdf)
+- [PDF version (dutch)](/docs/Thingsboard%20guide%20Dutch.pdf)
