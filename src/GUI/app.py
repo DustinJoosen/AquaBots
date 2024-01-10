@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, render_template, request
 from SetInterval import SetInterval
 from RequestHandlers import ThingsboardRequestHandler, ComponentAPIRequestHandler
-import random
 
 app = Flask(__name__)
 
@@ -17,21 +16,25 @@ thingsboardhandler.set_access_code("4k1q85v7h544t6d6ki17")
 def measure_humidity(**kwargs):
     print(f"Measuring humidity on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
 
-    humidity = componenthandler.get("humidity")
-    print(f"measured humidity: {humidity}")
+    # humidity = componenthandler.get("humidity", pin=kwargs["pin"])
+    humidity = 5
     thingsboardhandler.send({"humidity": humidity})
 
 
-def measure_gps(**kwargs):
-    print(f"Measuring GPS on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
-    thingsboardhandler.send({"gps": kwargs['pin']})
+def measure_compass(**kwargs):
+    print(f"Measuring compass on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
+
+    # compass = componenthandler.get("compass", pin=kwargs["pin"])
+    compass = 5
+    thingsboardhandler.send({"compass": compass})
 
 
 def measure_sonar(**kwargs):
     print(f"Measuring sonar on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
 
     # Measure using sonar here
-    distance = componenthandler.get("sonar")
+    # distance = componenthandler.get("sonar", pin=kwargs["pin"])
+    distance = 8
     thingsboardhandler.send({"distance": distance})
 
 
@@ -39,155 +42,63 @@ def measure_magneto(**kwargs):
     print(f"Measuring magneto on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
 
     # Measure using magnetometer here
-    magneto = componenthandler.get("magneto")
-    thingsboardhandler.send({"magneto": magneto})
+    # magneto = componenthandler.get("magneto", pin=kwargs["pin"])
+    thingsboardhandler.send({"magneto_x": 0.1})
+    thingsboardhandler.send({"magneto_y": 0.2})
+    thingsboardhandler.send({"magneto_z": 0.3})
 
 
 def measure_gyro(**kwargs):
     print(f"Measuring gyroscope on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
 
     # Measure using gyroscope here
-    gyroscope = componenthandler.get("gyroscope")
-    thingsboardhandler.send({"gyroscope": gyroscope})
+    # gyroscope = componenthandler.get("gyroscope", pin=kwargs["pin"])
+    thingsboardhandler.send({"gyro_x": 0.4})
+    thingsboardhandler.send({"gyro_y": 0.5})
+    thingsboardhandler.send({"gyro_z": 0.6})
 
 
 def measure_accel(**kwargs):
     print(f"Measuring accelerator on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
 
     # Measure using accelerator here
-    accelerator = componenthandler.get("accelerator")
-    thingsboardhandler.send({"accelerator": accelerator})
+    # accelerator = componenthandler.get("accelerator", pin=kwargs["pin"])
+    thingsboardhandler.send({"accelerator_x": 0.7})
+    thingsboardhandler.send({"accelerator_y": 0.8})
+    thingsboardhandler.send({"accelerator_z": 0.9})
 
+
+measuring_methods = {
+    "humidity": measure_humidity,
+    "sonar": measure_sonar,
+    "compass": measure_compass,
+    "accel": measure_accel,
+    "gyro": measure_gyro,
+    "magneto": measure_magneto,
+}
 
 # APIs
-@app.route("/api/sonar/on", methods=["GET"])
-def sonar_on():
+
+
+@app.route("/api/<sensor>/on", methods=["GET"])
+def turn_sensor_on(sensor):
     interval = request.args.get('interval')
     pin = request.args.get('pin')
 
-    data = {"message": f"Turning the Sonar sensor on, with an interval of {interval} on pin {pin}"}
-
-    interval_threads["sonar"] = SetInterval(measure_sonar, int(interval), **{"pin": pin})
-
-    return jsonify(data)
-
-
-@app.route("/api/sonar/off", methods=["GET"])
-def sonar_off():
-    data = {"message": "Turning the Sonar sensor off"}
-
-    interval_threads["sonar"].cancel()
-    interval_threads["sonar"] = None
+    data = {"message": f"Turning the {sensor} sensor on, with an interval of {interval} on pin {pin}"}
+    interval_threads[sensor] = SetInterval(measuring_methods[sensor], int(interval), **{"pin": pin})
 
     return jsonify(data)
 
 
-@app.route("/api/gps/on", methods=["GET"])
-def gps_on():
-    interval = request.args.get('interval')
-    pin = request.args.get('pin')
+@app.route("/api/<sensor>/off", methods=["GET"])
+def turn_sensor_off(sensor):
+    data = {"message": f"Turning the {sensor} sensor off"}
+    print(data["message"])
 
-    data = {"message": f"Turning the gps sensor on, with an interval of {interval} on pin {pin}"}
-
-    interval_threads["gps"] = SetInterval(measure_gps, int(interval), **{"pin": pin})
-
-    return jsonify(data)
-
-
-@app.route("/api/gps/off", methods=["GET"])
-def gps_off():
-    data = {"message": "Turning the GPS sensor off"}
-
-    interval_threads["gps"].cancel()
-    interval_threads["gps"] = None
-
-    return jsonify(data)
-
-
-@app.route("/api/humidity/on", methods=["GET"])
-def humidity_on():
-    interval = request.args.get('interval')
-    pin = request.args.get('pin')
-
-    data = {"message": f"Turning the humidity sensor on, with an interval of {interval} on pin {pin}"}
-
-    interval_threads["humidity"] = SetInterval(measure_humidity, int(interval), **{"pin": pin})
-
-    return jsonify(data)
-
-
-@app.route("/api/humidity/off", methods=["GET"])
-def humidity_off():
-    data = {"message": f"Turning the humidity sensor off"}
-
-    interval_threads["humidity"].cancel()
-    interval_threads["humidity"] = None
-
-    return jsonify(data)
-
-
-@app.route("/api/magneto/on", methods=["GET"])
-def magneto_on():
-    interval = request.args.get('interval')
-    pin = request.args.get('pin')
-
-    data = {"message": f"Turning the magneto sensor on, with an interval of {interval} on pin {pin}"}
-
-    interval_threads["magneto"] = SetInterval(measure_magneto, int(interval), **{"pin": pin})
-
-    return jsonify(data)
-
-
-@app.route("/api/magneto/off", methods=["GET"])
-def magneto_off():
-    data = {"message": f"Turning the magneto sensor off"}
-
-    interval_threads["magneto"].cancel()
-    interval_threads["magneto"] = None
-
-    return jsonify(data)
-
-
-@app.route("/api/gyro/on", methods=["GET"])
-def gyro_on():
-    interval = request.args.get('interval')
-    pin = request.args.get('pin')
-
-    data = {"message": f"Turning the gyro sensor on, with an interval of {interval} on pin {pin}"}
-
-    interval_threads["gyro"] = SetInterval(measure_gyro, int(interval), **{"pin": pin})
-
-    return jsonify(data)
-
-
-@app.route("/api/gyro/off", methods=["GET"])
-def gyro_off():
-    data = {"message": f"Turning the gyro sensor off"}
-
-    interval_threads["gyro"].cancel()
-    interval_threads["gyro"] = None
-
-    return jsonify(data)
-
-
-@app.route("/api/accel/on", methods=["GET"])
-def accel_on():
-    interval = request.args.get('interval')
-    pin = request.args.get('pin')
-
-    data = {"message": f"Turning the accellerator sensor on, with an interval of {interval} on pin {pin}"}
-
-    interval_threads["accel"] = SetInterval(measure_accel, int(interval), **{"pin": pin})
-
-    return jsonify(data)
-
-
-@app.route("/api/accel/off", methods=["GET"])
-def accel_off():
-    data = {"message": f"Turning the accel sensor off"}
-
-    interval_threads["accel"].cancel()
-    interval_threads["accel"] = None
+    if interval_threads[sensor]:
+        interval_threads[sensor].cancel()
+        interval_threads[sensor] = None
 
     return jsonify(data)
 
@@ -203,7 +114,16 @@ def set_access(code):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    sensors = [
+        {"name": "humidity", "display_name": "Humidity", "default_pin": "2A", "default_interval": 0.5},
+        {"name": "compass", "display_name": "Compass", "default_pin": "UART 1", "default_interval": 0.2},
+        {"name": "sonar", "display_name": "Sonar", "default_pin": "IC2 4", "default_interval": 0.5},
+        {"name": "accel", "display_name": "Accelerator", "default_pin": "IC2 4", "default_interval": 2},
+        {"name": "gyro", "display_name": "Gyroscope", "default_pin": "IC2 4", "default_interval": 2},
+        {"name": "magneto", "display_name": "Magnetometer", "default_pin": "IC2 4", "default_interval": 2},
+    ]
+
+    return render_template("index.html", sensors=sensors)
 
 
 if __name__ == "__main__":

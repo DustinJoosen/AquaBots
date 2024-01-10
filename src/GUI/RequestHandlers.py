@@ -7,8 +7,8 @@ class ComponentAPIRequestHandler:
     def __init__(self):
         self.base_url = "http://10.80.17.1:5001/api"
 
-    def get(self, endpoint):
-        url = f"{self.base_url}/{endpoint}"
+    def get(self, endpoint, pin='0'):
+        url = f"{self.base_url}/{endpoint}?pin={pin}"
 
         response = requests.get(url)
         if response.status_code != 200:

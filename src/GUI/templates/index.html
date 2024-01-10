@@ -3,24 +3,10 @@
     <head>
         <title>Aquabots Dashboard</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
-        <style>
-            .small-textbox {
-                width: 80px;
-                height: 25px;
-            }
-            /* p-3 mx-4 my-1*/
-            .card {
-                box-shadow: 2px 2px 10px gray;
-                padding: 20px;
-                width: 400px;
-                margin-bottom: 20px;
-                margin-left: 15px;
-                margin-right: 15px;
-            }
-        </style>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
-        <div class="col-6 mt-3 mb-1 mx-5 row">
+        <div class="mt-3 mb-1 mx-5 row col-6">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Thingsboard access-code</span>
@@ -31,134 +17,14 @@
                 </div>
             </div>
         </div>
+        <button id="toggle-all-sensors">Toggle all sensors</button>
+
         <hr/>
+
         <div class="container row m-5">
-            <div class="card" id="humidity-card">
-                <h3>Humidity</h3>
-                <hr/>
-                <div class="form-group row">
-                    <label class="form-check-label col-5" for="humidity_pin">Connected on pin: </label>
-                    <input type="text" id="humidity_pin" class="form-control small-textbox" value="2A">
-                </div>
-                <hr/>
-                <div class="form-group row">
-                    <label class="form-check-label col-5" for="humidity_interval">Interval (seconds): </label>
-                    <input type="number" id="humidity_interval" class="form-control small-textbox" value="2">
-                </div>
-                <hr/>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="toggle_humidity_btn">
-                    <label class="form-check-label" for="toggle_humidity_btn">Send humidity data to thingsboard</label>
-                </div>
-            </div>
-            <div class="card" id="compass-card">
-                <h3>Compass</h3>
-                <hr/>
-                <div class="form-group row">
-                    <label class="form-check-label col-5" for="compass_pin">Connected on pin: </label>
-                    <input type="text" id="compass_pin" class="form-control small-textbox" value="UART 1">
-                </div>
-                <hr/>
-                <div class="form-group row">
-                    <label class="form-check-label col-5" for="compass_interval">Interval (seconds): </label>
-                    <input type="number" id="compass_interval" class="form-control small-textbox" value="2">
-                </div>
-                <hr/>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="toggle_compass_btn">
-                    <label class="form-check-label" for="toggle_compass_btn">Send compass data to thingsboard</label>
-                </div>
-            </div>
-            <div class="card" id="sonar-card">
-                <h3>Sonar</h3>
-                <hr/>
-                <div class="form-group row">
-                    <label class="form-check-label col-5" for="sonar_pin">Connected on pin: </label>
-                    <input type="text" id="sonar_pin" class="form-control small-textbox" value="I2C 4">
-                </div>
-                <hr/>
-                <div class="form-group row">
-                    <label class="form-check-label col-5" for="sonar_interval">Interval (seconds): </label>
-                    <input type="number" id="sonar_interval" class="form-control small-textbox" value="0.5">
-                </div>
-                <hr/>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="toggle_sonar_btn">
-                    <label class="form-check-label" for="toggle_sonar_btn">Send sonar data to thingsboard</label>
-                </div>
-            </div>
-            <div class="card" id="accel-card">
-                <h3>Accelerator</h3>
-                <hr/>
-                <div class="form-group row">
-                    <label class="form-check-label col-5" for="humidity_pin">Connected on pin: </label>
-                    <input type="text" id="humidity_pin" class="form-control small-textbox" value="I2C 4">
-                </div>
-                <hr/>
-                <div class="form-group row">
-                    <label class="form-check-label col-5" for="humidity_interval">Interval (seconds): </label>
-                    <input type="number" id="humidity_interval" class="form-control small-textbox" value="2">
-                </div>
-                <hr/>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="toggle_humidity_btn">
-                    <label class="form-check-label" for="toggle_humidity_btn">Send accelerator data to thingsboard</label>
-                </div>
-            </div>
-            <div class="card" id="gyro-card">
-                <h3>Gyroscope</h3>
-                <hr/>
-                <div class="form-group row">
-                    <label class="form-check-label col-5" for="compass_pin">Connected on pin: </label>
-                    <input type="text" id="compass_pin" class="form-control small-textbox" value="I2C 4">
-                </div>
-                <hr/>
-                <div class="form-group row">
-                    <label class="form-check-label col-5" for="compass_interval">Interval (seconds): </label>
-                    <input type="number" id="compass_interval" class="form-control small-textbox" value="2">
-                </div>
-                <hr/>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="toggle_compass_btn">
-                    <label class="form-check-label" for="toggle_compass_btn">Send gyroscope data to thingsboard</label>
-                </div>
-            </div>
-            <div class="card" id="magneto-card">
-                <h3>Magnetometer</h3>
-                <hr/>
-                <div class="form-group row">
-                    <label class="form-check-label col-5" for="magneto_pin">Connected on pin: </label>
-                    <input type="text" id="magneto_pin" class="form-control small-textbox" value="I2C 4">
-                </div>
-                <hr/>
-                <div class="form-group row">
-                    <label class="form-check-label col-5" for="magneto_interval">Interval (seconds): </label>
-                    <input type="number" id="magneto_interval" class="form-control small-textbox" value="0.5">
-                </div>
-                <hr/>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="toggle_magneto_btn">
-                    <label class="form-check-label" for="toggle_magneto_btn">Send magnetometer data to thingsboard</label>
-                </div>
-            </div>
-{#            <div class="card" id="gps-card">#}
-{#                <h3>GPS</h3>#}
-{#                <hr/>#}
-{#                <div class="form-group row">#}
-{#                    <label class="form-check-label col-5" for="gps_pin">Connected on pin: </label>#}
-{#                    <input type="text" id="gps_pin" class="form-control small-textbox" value="UART 1">#}
-{#                </div>#}
-{#                <hr/>#}
-{#                <div class="form-group row">#}
-{#                    <label class="form-check-label col-5" for="gps_interval">Interval (seconds): </label>#}
-{#                    <input type="number" id="gps_interval" class="form-control small-textbox" value="2">#}
-{#                </div>#}
-{#                <hr/>#}
-{#                <div class="form-check form-switch">#}
-{#                    <input class="form-check-input" type="checkbox" role="switch" id="toggle_gps_btn">#}
-{#                    <label class="form-check-label" for="toggle_gps_btn">Send GPS data to thingsboard</label>#}
-{#                </div>#}
-{#            </div>#}
+            {% for sensor in sensors %}
+                {% include "card-template.html" %}
+            {% endfor %}
         </div>
         <script src="{{ url_for('static', filename='main.js') }}"></script>
         <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
