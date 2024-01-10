@@ -11,61 +11,81 @@ componenthandler = ComponentAPIRequestHandler()
 thingsboardhandler = ThingsboardRequestHandler()
 thingsboardhandler.set_access_code("4k1q85v7h544t6d6ki17")
 
+# True: get actual data. False: get static data.
+PULL_DATA_FROM_API = not False
+
 
 # Functions that actually measure things.
 def measure_humidity(**kwargs):
     print(f"Measuring humidity on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
 
-    # humidity = componenthandler.get("humidity", pin=kwargs["pin"])
-    humidity = 5
+    if PULL_DATA_FROM_API:
+        humidity = componenthandler.get("humidity", pin=kwargs["pin"])
+    else:
+        humidity = 175
+
     thingsboardhandler.send({"humidity": humidity})
 
 
 def measure_compass(**kwargs):
     print(f"Measuring compass on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
 
-    # compass = componenthandler.get("compass", pin=kwargs["pin"])
-    compass = 5
+    if PULL_DATA_FROM_API:
+        compass = componenthandler.get("compass", pin=kwargs["pin"])
+    else:
+        compass = 80
+
     thingsboardhandler.send({"compass": compass})
 
 
 def measure_sonar(**kwargs):
     print(f"Measuring sonar on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
 
-    # Measure using sonar here
-    # distance = componenthandler.get("sonar", pin=kwargs["pin"])
-    distance = 8
+    if PULL_DATA_FROM_API:
+        distance = componenthandler.get("sonar", pin=kwargs["pin"])
+    else:
+        distance = 45
+
     thingsboardhandler.send({"distance": distance})
 
 
 def measure_magneto(**kwargs):
     print(f"Measuring magneto on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
 
-    # Measure using magnetometer here
-    # magneto = componenthandler.get("magneto", pin=kwargs["pin"])
-    thingsboardhandler.send({"magneto_x": 0.1})
-    thingsboardhandler.send({"magneto_y": 0.2})
-    thingsboardhandler.send({"magneto_z": 0.3})
+    if PULL_DATA_FROM_API:
+        magneto = componenthandler.get("magneto", pin=kwargs["pin"])
+    else:
+        magneto = [0.1, 0.2, 0.3]
+
+    thingsboardhandler.send({"magneto_x": magneto[0]})
+    thingsboardhandler.send({"magneto_y": magneto[1]})
+    thingsboardhandler.send({"magneto_z": magneto[2]})
 
 
 def measure_gyro(**kwargs):
     print(f"Measuring gyroscope on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
 
-    # Measure using gyroscope here
-    # gyroscope = componenthandler.get("gyroscope", pin=kwargs["pin"])
-    thingsboardhandler.send({"gyro_x": 0.4})
-    thingsboardhandler.send({"gyro_y": 0.5})
-    thingsboardhandler.send({"gyro_z": 0.6})
+    if PULL_DATA_FROM_API:
+        gyroscope = componenthandler.get("gyroscope", pin=kwargs["pin"])
+    else:
+        gyroscope = [0.4, 0.5, 0.6]
+
+    thingsboardhandler.send({"gyro_x": gyroscope[0]})
+    thingsboardhandler.send({"gyro_y": gyroscope[1]})
+    thingsboardhandler.send({"gyro_z": gyroscope[2]})
 
 
 def measure_accel(**kwargs):
     print(f"Measuring accelerator on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
 
-    # Measure using accelerator here
-    # accelerator = componenthandler.get("accelerator", pin=kwargs["pin"])
-    thingsboardhandler.send({"accelerator_x": 0.7})
-    thingsboardhandler.send({"accelerator_y": 0.8})
-    thingsboardhandler.send({"accelerator_z": 0.9})
+    if PULL_DATA_FROM_API:
+        accelerator = componenthandler.get("accelerator", pin=kwargs["pin"])
+    else:
+        accelerator = [0.7, 0.8, 0.9]
+
+    thingsboardhandler.send({"accelerator_x": accelerator[0]})
+    thingsboardhandler.send({"accelerator_y": accelerator[1]})
+    thingsboardhandler.send({"accelerator_z": accelerator[2]})
 
 
 measuring_methods = {
