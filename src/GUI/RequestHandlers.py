@@ -5,7 +5,7 @@ import json
 class ComponentAPIRequestHandler:
 
     def __init__(self):
-        self.base_url = "http://127.0.0.1:5001/api"
+        self.base_url = "http://10.80.17.1:5001/api"
 
     def get(self, endpoint):
         url = f"{self.base_url}/{endpoint}"

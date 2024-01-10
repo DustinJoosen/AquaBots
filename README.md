@@ -9,6 +9,13 @@ Before anything else, you have to install everything. This process is described 
 
 ## Connect the hardware
 
+```
+Moisture: 		port A2
+IMU:    		port IC2
+
+Location command: cat /dev/ttyAMA0
+```
+
 @Laurens, kan je hier 2 zinnen over schrijven? Of gewoon een linkje naar je schetsen in de docs folder.
 
 

@@ -40,6 +40,36 @@ document.getElementById("toggle_gps_btn").addEventListener("change", (event) => 
 });
 
 
+document.getElementById("toggle_magneto_btn").addEventListener("change", (event) => {
+    let on_off = event.target.checked;
+    let interval = parseInt(document.getElementById("magneto_interval").value);
+    let pin = document.getElementById("magneto_pin").value;
+
+    // Send request
+    send_api_request("magneto/" + (on_off ? "on" : "off") + "?interval=" + interval + "&pin=" + pin);
+});
+
+document.getElementById("toggle_gyro_btn").addEventListener("change", (event) => {
+    let on_off = event.target.checked;
+    let interval = parseInt(document.getElementById("gyro_interval").value);
+    let pin = document.getElementById("gyro_pin").value;
+
+    // Send request
+    send_api_request("gyro/" + (on_off ? "on" : "off") + "?interval=" + interval + "&pin=" + pin);
+});
+
+
+document.getElementById("toggle_accel_btn").addEventListener("change", (event) => {
+    let on_off = event.target.checked;
+    let interval = parseInt(document.getElementById("accel_interval").value);
+    let pin = document.getElementById("accel_pin").value;
+
+    // Send request
+    send_api_request("accel/" + (on_off ? "on" : "off") + "?interval=" + interval + "&pin=" + pin);
+});
+
+
+
 document.getElementById("submit-thingsboard-access-code").onclick = () => {
     let code = document.getElementById("thingsboard-access-code").value;
     alert("set thingsboard access code to " + code);
