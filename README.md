@@ -16,9 +16,6 @@ IMU:    		port IC2
 Location command: cat /dev/ttyAMA0
 ```
 
-@Laurens, kan je hier 2 zinnen over schrijven? Of gewoon een linkje naar je schetsen in de docs folder.
-
-
 ## Running the API
 
 On the raspberry pi, run one of the following files:
