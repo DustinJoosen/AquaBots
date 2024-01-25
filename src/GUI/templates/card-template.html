@@ -2,8 +2,9 @@
     <h3>{{ sensor.display_name }}</h3>
     <hr/>
     <div class="form-group row">
+        <!-- This might need to be removed. Is currently not actually used. -->
         <label class="form-check-label col-5" for="{{ sensor.name }}_pin">Connected on pin: </label>
-        <input type="text" id="{{ sensor.name }}_pin" class="form-control small-textbox" value="{{ sensor.default_pin }}">
+        <input type="text" id="{{ sensor.name }}_pin" class="form-control small-textbox" value="{{ sensor.default_pin }}" disabled>
     </div>
     <hr/>
     <div class="form-group row">

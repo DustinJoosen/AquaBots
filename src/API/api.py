@@ -8,6 +8,8 @@ from Components.IMU import get_accelerometer, get_magnetometer, get_gyroscope
 app = Flask(__name__)
 
 
+# TODO: Make a generic endpoint that can request multiple measurements. Cause now it get's spammed.
+
 @app.route('/api/servo', methods=['POST'])
 def servo():
     angle = request.json.get("angle")

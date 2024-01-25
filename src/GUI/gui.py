@@ -4,18 +4,21 @@ from RequestHandlers import ThingsboardRequestHandler, ComponentAPIRequestHandle
 
 app = Flask(__name__)
 
+# Stores the threads that send data
 interval_threads = {}
 
+# Handler that grabs things from the API on the RPI.
 componenthandler = ComponentAPIRequestHandler()
 
+# Handler that sends out things to thingsboard
 thingsboardhandler = ThingsboardRequestHandler()
-thingsboardhandler.set_access_code("4k1q85v7h544t6d6ki17")
+thingsboardhandler.set_access_code("4k1q85v7h544t6d6ki17")  #default
 
 # True: get actual data. False: get static data.
-PULL_DATA_FROM_API = not False
+PULL_DATA_FROM_API = True
 
 
-# Functions that actually measure things.
+# Functions that request a sensor value and send it to thingsboard.
 def measure_humidity(**kwargs):
     print(f"Measuring humidity on pin {kwargs['pin']} (access-code: {thingsboardhandler.access_code})")
 
@@ -96,8 +99,6 @@ measuring_methods = {
     "gyro": measure_gyro,
     "magneto": measure_magneto,
 }
-
-# APIs
 
 
 @app.route("/api/<sensor>/on", methods=["GET"])
