@@ -11,7 +11,7 @@ Before anything else, you have to install everything. This process is described 
 
 At this moment there are four sensors to be connected to the RPI. The following picture describes how to do this. There is also a guide, found in [the document folder](/docs/Pi%20Sensors%20Assembly%20Guide%20Eng.pdf)
 
-![Alt text](image.png)
+![Alt text](connections.png)
 
 ## Running the API
 
