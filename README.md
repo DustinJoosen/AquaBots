@@ -15,15 +15,21 @@ At this moment there are four sensors to be connected to the RPI. The following 
 
 ## Running the API
 
-On the raspberry pi, run the following file:
+On the raspberry pi, run either of the following files:
 - src/API/api.py
+- src/API/api.exe
+
+There _shouldn't_ be any difference in the two of them.
 
 This is an API that will use the sensors, and send the data. The GUI uses this API to get.
 
 ## Running the GUI
 
-On the host laptop, run the following file:
+On the host laptop, run either of the following files:
 - src/GUI/gui.py
+- src/GUI/gui.exe
+
+There _shouldn't_ be any difference in the two of them.
 
 When this file is running, visit the webpage on http://127.0.0.1:5000/ 
 
